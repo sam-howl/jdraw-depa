@@ -15,6 +15,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import jdraw.figures.Group;
 import jdraw.figures.LineTool;
 import jdraw.figures.OvalTool;
 import jdraw.figures.RectTool;
@@ -107,14 +108,27 @@ public class StdContext extends AbstractContext {
 		clear.addActionListener(e -> {
 			getModel().removeAllFigures();
 		});
-		
+
 		editMenu.addSeparator();
 		JMenuItem group = new JMenuItem("Group");
-		group.setEnabled(false);
+		group.addActionListener(e -> {
+			List<Figure> figures = getView().getSelection();
+			getModel().addFigure(new Group(figures));
+			figures.forEach(f -> getModel().removeFigure(f));
+		});
 		editMenu.add(group);
 
 		JMenuItem ungroup = new JMenuItem("Ungroup");
-		ungroup.setEnabled(false);
+		ungroup.addActionListener(e -> {
+			List<Figure> figures = getView().getSelection();
+			for (Figure f : figures) {
+				if (f instanceof Group){
+					for (Figure g : ((Group) f).getFigureParts())
+						getModel().addFigure(g);
+					getModel().removeFigure(f);
+				}
+			}
+		});
 		editMenu.add(ungroup);
 
 		editMenu.addSeparator();
