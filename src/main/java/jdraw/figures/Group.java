@@ -19,6 +19,11 @@ public class Group implements Figure, FigureGroup {
         this.parts = new CopyOnWriteArrayList<>(parts);
     }
 
+    public Group(Group group){
+        parts = new CopyOnWriteArrayList<>();
+        group.parts.forEach(f -> this.parts.add(f.clone()));
+    }
+
     @Override
     public void draw(Graphics g) {
         parts.forEach(f -> f.draw(g));
@@ -48,6 +53,11 @@ public class Group implements Figure, FigureGroup {
     }
 
     @Override
+    public Group clone(){
+        return new Group(this);
+    }
+
+    @Override
     public List<FigureHandle> getHandles() {
         handles.add(new Handle(new NorthWestHandle(this)));
         handles.add(new Handle (new NorthEastHandle(this)));
@@ -64,11 +74,6 @@ public class Group implements Figure, FigureGroup {
     @Override
     public void removeFigureListener(FigureListener listener) {
 
-    }
-
-    @Override
-    public Figure clone() {
-        return null;
     }
 
     @Override
