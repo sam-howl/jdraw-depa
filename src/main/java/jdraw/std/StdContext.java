@@ -5,6 +5,7 @@
 package jdraw.std;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import jdraw.grid.Grid;
  */
 @SuppressWarnings("serial")
 public class StdContext extends AbstractContext {
+	private List<Figure> clipboard = new ArrayList<>();
 	/**
 	 * Constructs a standard context with a default set of drawing tools.
 	 * @param view the view that is displaying the actual drawing.
@@ -98,9 +100,32 @@ public class StdContext extends AbstractContext {
 		);
 
 		editMenu.addSeparator();
-		editMenu.add("Cut").setEnabled(false);
-		editMenu.add("Copy").setEnabled(false);
-		editMenu.add("Paste").setEnabled(false);
+		JMenuItem cut = new JMenuItem("Cut");
+		editMenu.add(cut);
+		cut.addActionListener(e -> {
+			if(!clipboard.isEmpty())
+				clipboard.clear();
+			getView().getSelection().forEach(f -> {
+				//clone so the original properties are fetched when pasting and prevent changes before pasting
+				clipboard.add(f.clone());
+				//remove all the selected figures
+				getView().getModel().removeFigure(f);
+			});
+		});
+		JMenuItem copy = new JMenuItem("Copy");
+		editMenu.add(copy);
+		copy.addActionListener(e -> {
+			if(!clipboard.isEmpty())
+				clipboard.clear();
+			//clone so the original properties are fetched when pasting and prevent changes before pasting
+			getView().getSelection().forEach(f -> clipboard.add(f.clone()));
+		});
+		JMenuItem paste = new JMenuItem("Paste");
+		editMenu.add(paste);
+		paste.addActionListener(e -> {
+			//clone again to do multiple pastes
+			clipboard.forEach(f -> getView().getModel().addFigure(f.clone()));
+		});
 
 		editMenu.addSeparator();
 		JMenuItem clear = new JMenuItem("Clear");

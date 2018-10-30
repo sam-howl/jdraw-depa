@@ -37,6 +37,10 @@ public class Line extends AbstractFigure {
 		line2D = new Line2D.Double(x, y, w, h);
 	}
 
+	public Line (Line line){
+		line2D = (Line2D.Double) line.line2D.clone();
+	}
+
 	/**
 	 * Draw the line to the given graphics context.
 	 * @param g the graphics context to use for drawing.
@@ -79,6 +83,11 @@ public class Line extends AbstractFigure {
 	@Override
 	public Rectangle getBounds() {
 		return line2D.getBounds();
+	}
+
+	@Override
+	public Line clone(){
+		return new Line(this);
 	}
 
 	public java.util.List<FigureHandle> getHandles() {
