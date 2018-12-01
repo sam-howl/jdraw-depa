@@ -16,10 +16,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import jdraw.figures.Group;
-import jdraw.figures.LineTool;
-import jdraw.figures.OvalTool;
-import jdraw.figures.RectTool;
+import jdraw.figures.*;
 import jdraw.framework.DrawCommandHandler;
 import jdraw.framework.DrawModel;
 import jdraw.framework.DrawTool;
@@ -192,6 +189,32 @@ public class StdContext extends AbstractContext {
 		grid.add(noGrid);
 		editMenu.add(grid);
 
+		JMenu decorator = new JMenu("Decorators...");
+		JMenuItem borderDecorator = new JMenuItem("Border Decorator");
+		borderDecorator.addActionListener(e -> {
+			for (Figure f : getView().getSelection()){
+				getModel().removeFigure(f);
+				if(!(f instanceof DecoratorBorder)){
+					getModel().addFigure(new DecoratorBorder(f));
+				} else {
+					getModel().addFigure(new DecoratorBorder(f, ((DecoratorBorder) f).getCount()));
+				}
+			}
+		});
+		JMenuItem borderDecoratorRemove = new JMenuItem("Remove Border Decorator");
+		borderDecoratorRemove.addActionListener(e -> {
+			for (Figure f : getView().getSelection()){
+				if(f instanceof DecoratorBorder){
+					AbstractDecoratorFigure d = (AbstractDecoratorFigure) f;
+					Figure inner = d.getInner();
+					getModel().removeFigure(f);
+					getModel().addFigure(inner);
+				}
+			}
+		});
+		decorator.add(borderDecorator);
+		decorator.add(borderDecoratorRemove);
+		editMenu.add(decorator);
 		
 		return editMenu;
 	}
