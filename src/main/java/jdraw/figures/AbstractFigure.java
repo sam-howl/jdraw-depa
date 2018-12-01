@@ -11,16 +11,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class AbstractFigure implements Figure {
     private final CopyOnWriteArrayList<FigureListener> figureListenerList = new CopyOnWriteArrayList<>();
 
-    /**
-     * Returns a list of 8 handles for this Rectangle.
-     * @return all handles that are attached to the targeted figure.
-     * @see jdraw.framework.Figure#getHandles()
-     */
-    @Override
-    public List<FigureHandle> getHandles() {
-        return null;
-    }
-
     @Override
     public final void addFigureListener(FigureListener listener) {
         figureListenerList.add(listener);
@@ -37,7 +27,7 @@ public abstract class AbstractFigure implements Figure {
     }
 
     @Override
-    public Figure clone() {
+    public Figure clone(){
         return null;
     }
 }

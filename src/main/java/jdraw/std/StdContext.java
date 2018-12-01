@@ -137,7 +137,13 @@ public class StdContext extends AbstractContext {
 		editMenu.addSeparator();
 		JMenuItem group = new JMenuItem("Group");
 		group.addActionListener(e -> {
-			List<Figure> figures = getView().getSelection();
+			List<Figure> selectedFigures = getView().getSelection();
+			List<Figure> figures = new ArrayList<>();
+			for (Figure f : getModel().getFigures()){
+				if(selectedFigures.contains(f)){
+					figures.add(f);
+				}
+			}
 			getModel().addFigure(new Group(figures));
 			figures.forEach(f -> getModel().removeFigure(f));
 		});

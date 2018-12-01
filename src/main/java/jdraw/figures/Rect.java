@@ -40,7 +40,8 @@ public class Rect extends AbstractFigure {
 	}
 
 	public Rect (Rect rect){
-		rectangle = (Rectangle) rect.rectangle.clone();
+		Rectangle orig = rect.getBounds();
+		rectangle = new Rectangle(orig.x, orig.y, orig.width, orig.height);
 	}
 
 	/**
