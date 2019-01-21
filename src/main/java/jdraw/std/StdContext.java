@@ -192,13 +192,14 @@ public class StdContext extends AbstractContext {
 		JMenu decorator = new JMenu("Decorators...");
 		JMenuItem borderDecorator = new JMenuItem("Border Decorator");
 		borderDecorator.addActionListener(e -> {
-			for (Figure f : getView().getSelection()){
+			List<Figure> selected = getView().getSelection();
+			getView().clearSelection();
+			for (Figure f : selected){
+				DecoratorBorder border = new DecoratorBorder(f);
 				getModel().removeFigure(f);
-				if(!(f instanceof DecoratorBorder)){
-					getModel().addFigure(new DecoratorBorder(f));
-				} else {
-					getModel().addFigure(new DecoratorBorder(f, ((DecoratorBorder) f).getCount()));
-				}
+				getModel().addFigure(border);
+				getView().addToSelection(border);
+				getModel().removeFigure(f);
 			}
 		});
 		JMenuItem borderDecoratorRemove = new JMenuItem("Remove Border Decorator");

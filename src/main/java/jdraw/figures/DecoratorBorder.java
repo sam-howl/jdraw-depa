@@ -5,26 +5,33 @@ import jdraw.framework.Figure;
 import java.awt.*;
 
 public class DecoratorBorder extends AbstractDecoratorFigure {
-    private int count;
+    private static final int BORDER_OFFSET = 5;
 
     public DecoratorBorder (Figure f){
         super(f);
-        this.count = 1;
-    }
-
-    public DecoratorBorder (Figure f, int counter){
-        super(f);
-        this.count = ++counter;
     }
 
     @Override
     public void draw(Graphics g) {
         super.draw(g);
-        Rectangle r = super.getBounds();
-        g.drawRect(r.x - 2 * count , r.y - 2 * count, r.width + 4 * count, r.height + 4 * count);
+        Rectangle r = getBounds();
+        g.setColor(Color.white);
+        g.drawLine(r.x, r.y, r.x, r.y + r.height);
+        g.drawLine(r.x, r.y, r.x + r.width, r.y);
+        g.setColor(Color.gray);
+        g.drawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
+        g.drawLine(r.x, r.y + r.height, r.x + r.width, r.y+ r.height);
     }
 
-    public int getCount(){
-        return this.count;
+    @Override
+    public Rectangle getBounds() {
+        Rectangle r = getInner().getBounds();
+        r.grow(BORDER_OFFSET, BORDER_OFFSET);
+        return r;
+    }
+
+    @Override
+    public boolean contains(int x, int y){
+        return getBounds().contains(x, y);
     }
 }

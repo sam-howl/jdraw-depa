@@ -56,7 +56,13 @@ public abstract class AbstractDecoratorFigure implements Figure {
 
     @Override
     public Figure clone() {
-        return inner.clone();
+        try {
+            AbstractDecoratorFigure f = (AbstractDecoratorFigure) super.clone();
+            f.inner = inner.clone();
+            return f;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
     }
 
     public Figure getInner(){
