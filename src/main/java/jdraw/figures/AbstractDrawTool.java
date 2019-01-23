@@ -4,6 +4,7 @@ import jdraw.framework.DrawContext;
 import jdraw.framework.DrawTool;
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
+import jdraw.std.DrawCommandInsert;
 
 import javax.swing.*;
 import java.awt.*;
@@ -124,6 +125,7 @@ public abstract class  AbstractDrawTool implements DrawTool {
      */
     @Override
     public void mouseUp(int x, int y, MouseEvent e) {
+        this.context.getModel().getDrawCommandHandler().addCommand(new DrawCommandInsert(newFigure, this.context.getModel()));
         newFigure = null;
         anchor = null;
         this.context.showStatusText(getName() + " Mode");

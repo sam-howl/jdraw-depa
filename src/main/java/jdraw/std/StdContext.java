@@ -35,6 +35,7 @@ import jdraw.grid.Grid;
 @SuppressWarnings("serial")
 public class StdContext extends AbstractContext {
 	private List<Figure> clipboard = new ArrayList<>();
+	private List<DrawToolFactory> toolFactories = new LinkedList<>();
 	/**
 	 * Constructs a standard context with a default set of drawing tools.
 	 * @param view the view that is displaying the actual drawing.
@@ -52,6 +53,7 @@ public class StdContext extends AbstractContext {
 	 */
 	public StdContext(DrawView view, List<DrawToolFactory> toolFactories) {
 		super(view, toolFactories);
+		this.toolFactories = toolFactories;
 	}
 
 	/**
@@ -247,12 +249,15 @@ public class StdContext extends AbstractContext {
 
 	@Override
 	protected void doRegisterDrawTools() {
-		DrawTool rectangleTool = new RectTool(this, "Rectangle");
-		addTool(rectangleTool);
-		DrawTool ovalTool = new OvalTool(this, "Oval");
-		addTool(ovalTool);
-		DrawTool lineTool = new LineTool(this, "Line");
-		addTool(lineTool);
+		for (DrawToolFactory dt : getToolFactories()){
+			addTool(dt == null ? null : dt.createTool(this));
+		}
+//		DrawTool rectangleTool = new RectTool(this, "Rectangle");
+//		addTool(rectangleTool);
+//		DrawTool ovalTool = new OvalTool(this, "Oval");
+//		addTool(ovalTool);
+//		DrawTool lineTool = new LineTool(this, "Line");
+//		addTool(lineTool);
 	}
 
 	/**

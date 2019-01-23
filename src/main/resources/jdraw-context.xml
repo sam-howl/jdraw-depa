@@ -18,18 +18,18 @@
 
 		<constructor-arg>
 			<list>	<!-- null represents a separator -->
-<!--
+
 				<ref bean="line"/>
 				<ref bean="rectangle"/>
 				<ref bean="oval"/>
--->
+
 			</list>
 		</constructor-arg>
 	</bean>
 
 
-<!--
-	<bean id="rectangle" class="jdraw.figures.RectangleToolFactory">
+
+	<bean id="rectangle" class="jdraw.figures.RectToolFactory">
 		<property name="name"><value>Rectangle</value></property>
 		<property name="iconName"><value>rectangle.png</value></property>
 	</bean>
@@ -43,6 +43,6 @@
 		<property name="name"><value>Oval</value></property>
 		<property name="iconName"><value>oval.png</value></property>
 	</bean>
--->
+
 
 </beans>
